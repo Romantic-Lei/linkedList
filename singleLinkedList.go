@@ -21,10 +21,11 @@ func InsertHeroNode(head *HeroNode, newHeroNode *HeroNode) {
 	for {
 		if temp.next == nil { 
 			// 找到链表的最后一条数据，跳出
-			break
+			// temp.next 为最后一条数据的 next 属性
+			break // 跳出 for 循环
 		}
 
-		temp = temp.next // 让 temp 不断的指向下一个节点
+		temp = temp.next // 让 temp 不断的指向下一个节点,循环
 	}
 	// 3. 将 newHeroNode 加入到链表的最后
 	temp.next = newHeroNode
