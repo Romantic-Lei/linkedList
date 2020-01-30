@@ -60,54 +60,18 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 } 
 
 // 删除一个结点
-// head *HeroNode 头结点， id int 结点编号no
-func DelHeroNode(head *HeroNode, id int) {
-	temp := head
-	flag := false // 假定找不到
-	// 找到要删除结点的no ，和temp 的下一个结点的 no比较
-	for {
-		if temp.next == nil { 
-			// 说明到了链表的最后
-			break
-		} else if temp.next.no == id {
-			// 说明找到了这个 no
-			flag = true
-			break
-		}
-		temp = temp.next
-	}
-	if flag {
-		// 找到，删除
-		temp.next = temp.next.next
-	} else {
-		fmt.Printf("请您确认您输入的id(%d) 是否正确\n", id)
-	}	
+// currentNode *HeroNode 当前需要删除的结点， id int 结点编号no
+func DelHeroNode(currentNode *HeroNode, id int) {
+	// 找到，删除
+	currentNode.next = currentNode.next.next
 }
 
 // 修改一个结点
 // head *HeroNode 头结点， id int 结点编号no
-func UpdateHeroNode(head *HeroNode, newHeroNode *HeroNode) {
-	temp := head
-	flag := false // 假定找不到
-	// 找到要删除结点的no ，和temp 的下一个结点的 no比较
-	for {
-		if temp.next == nil { 
-			// 说明到了链表的最后
-			break
-		} else if temp.next.no == newHeroNode.no {
-			// 说明找到了这个 no
-			flag = true
-			break
-		}
-		temp = temp.next
-	}
-	if flag {
-		// 找到，修改
-		newHeroNode.next = temp.next.next
-		temp.next = newHeroNode
-	} else {
-		fmt.Printf("请您确认您输入的id(%d) 是否正确\n", newHeroNode.no)
-	}	
+func UpdateHeroNode(currentNode *HeroNode, newHeroNode *HeroNode) {
+	// 找到，修改
+	newHeroNode.next = currentNode.next.next
+	currentNode.next = newHeroNode
 }
 
 // 显示链表的所有信息
@@ -131,6 +95,26 @@ func ListHeroNode(head *HeroNode) {
 		}
 	}
 	fmt.Println()
+}
+
+// 判断当前 id 是否存在，存在即可进行下面的操作
+// head *HeroNode 头结点, id int 编号信息
+func IsExist(head *HeroNode, id int) (temp *HeroNode, b bool) {
+	temp = head
+	flag := false // 假定找不到
+	// 找到要删除结点的no ，和temp 的下一个结点的 no比较
+	for {
+		if temp.next == nil { 
+			// 说明到了链表的最后
+			break
+		} else if temp.next.no == id {
+			// 说明找到了这个 no
+			flag = true
+			break
+		}
+		temp = temp.next
+	}
+	return temp, flag
 }
 
 func main() {
@@ -195,22 +179,32 @@ func main() {
 		case "delete":
 			fmt.Println("请输入英雄编号")
 			fmt.Scanln(&no)
-			// 删除
-			DelHeroNode(head, no)
+			temp, flag := IsExist(head, no)
+			if flag {
+				// 删除
+				DelHeroNode(temp, no)
+			} else {
+				fmt.Printf("请您确认您输入的id(%d) 是否正确\n", no)
+			}
 		case "update":
 			fmt.Println("请输入英雄编号")
 			fmt.Scanln(&no)
-			fmt.Println("请输入英雄名字")
-			fmt.Scanln(&name)
-			fmt.Println("请输入英雄昵称")
-			fmt.Scanln(&nickName)
-			// 修改
-			hero := &HeroNode{
-				no : no,
-				name : name,
-				nickName : nickName,
+			temp, flag := IsExist(head, no)
+			if flag {
+				fmt.Println("请输入英雄名字")
+				fmt.Scanln(&name)
+				fmt.Println("请输入英雄昵称")
+				fmt.Scanln(&nickName)
+				// 修改
+				hero := &HeroNode{
+					no : no,
+					name : name,
+					nickName : nickName,
+				}
+				UpdateHeroNode(temp, hero)
+			} else {
+				fmt.Printf("请您确认您输入的id(%d) 是否正确\n", no)
 			}
-			UpdateHeroNode(head, hero)
 
 		case "list":
 			// 显示
