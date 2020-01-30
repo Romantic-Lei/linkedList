@@ -67,7 +67,7 @@ func DelHeroNode(currentNode *HeroNode, id int) {
 }
 
 // 修改一个结点
-// head *HeroNode 头结点， id int 结点编号no
+// currentNode *HeroNode 当前需要修改的结点， id int 结点编号no
 func UpdateHeroNode(currentNode *HeroNode, newHeroNode *HeroNode) {
 	// 找到，修改
 	newHeroNode.next = currentNode.next.next
