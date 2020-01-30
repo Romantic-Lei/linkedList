@@ -36,7 +36,7 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	// 1. 先找到这个链表的最后一个结点
 	// 2. 创建一个辅助结点
 	temp := head
-	flag := true
+	flag := true // 假定编号不存在
 	// 让插入的结点的no ，和temp 的下一个结点的 no比较
 	for {
 		if temp.next == nil {
@@ -59,6 +59,57 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	}	
 } 
 
+// 删除一个结点
+// head *HeroNode 头结点， id int 结点编号no
+func DelHeroNode(head *HeroNode, id int) {
+	temp := head
+	flag := false // 假定找不到
+	// 找到要删除结点的no ，和temp 的下一个结点的 no比较
+	for {
+		if temp.next == nil { 
+			// 说明到了链表的最后
+			break
+		} else if temp.next.no == id {
+			// 说明找到了这个 no
+			flag = true
+			break
+		}
+		temp = temp.next
+	}
+	if flag {
+		// 找到，删除
+		temp.next = temp.next.next
+	} else {
+		fmt.Printf("请您确认您输入的id(%d) 是否正确\n", id)
+	}	
+}
+
+// 修改一个结点
+// head *HeroNode 头结点， id int 结点编号no
+func UpdateHeroNode(head *HeroNode, newHeroNode *HeroNode) {
+	temp := head
+	flag := false // 假定找不到
+	// 找到要删除结点的no ，和temp 的下一个结点的 no比较
+	for {
+		if temp.next == nil { 
+			// 说明到了链表的最后
+			break
+		} else if temp.next.no == newHeroNode.no {
+			// 说明找到了这个 no
+			flag = true
+			break
+		}
+		temp = temp.next
+	}
+	if flag {
+		// 找到，修改
+		newHeroNode.next = temp.next.next
+		temp.next = newHeroNode
+	} else {
+		fmt.Printf("请您确认您输入的id(%d) 是否正确\n", newHeroNode.no)
+	}	
+}
+
 // 显示链表的所有信息
 func ListHeroNode(head *HeroNode) {
 	// 1. 创建一个辅助结点
@@ -79,6 +130,7 @@ func ListHeroNode(head *HeroNode) {
 			break
 		}
 	}
+	fmt.Println()
 }
 
 func main() {
@@ -105,13 +157,66 @@ func main() {
 	// InsertHeroNode(head,hero3)
 	// InsertHeroNode(head,hero1)
 	// InsertHeroNode(head,hero2)
+	
+	InsertHeroNode2(head,hero3)
+	InsertHeroNode2(head,hero1)
+	InsertHeroNode2(head,hero2)
+	InsertHeroNode2(head,hero1)
+	InsertHeroNode2(head,hero3)
+	InsertHeroNode2(head,hero2)
 
-	InsertHeroNode2(head,hero3)
-	InsertHeroNode2(head,hero1)
-	InsertHeroNode2(head,hero2)
-	InsertHeroNode2(head,hero1)
-	InsertHeroNode2(head,hero3)
-	InsertHeroNode2(head,hero2)
-	// 4. 显示
-	ListHeroNode(head)
+	var key string 
+	var no int
+	var name string
+	var nickName string
+	for {
+		fmt.Println("1. 输入 insert 插入一条英雄信息")
+		fmt.Println("2. 输入 delete 删除一条英雄信息")
+		fmt.Println("2. 输入 update 修改一条英雄信息")
+		fmt.Println("3. 输入 list 查询所有英雄信息")
+		fmt.Println()
+
+		fmt.Println("请输入对应的关键字")
+		fmt.Scanln(&key)
+		switch key {
+		case "insert":
+			fmt.Println("请输入英雄编号")
+			fmt.Scanln(&no)
+			fmt.Println("请输入英雄名字")
+			fmt.Scanln(&name)
+			fmt.Println("请输入英雄昵称")
+			fmt.Scanln(&nickName)
+			hero := &HeroNode{
+				no : no,
+				name : name,
+				nickName : nickName,
+			}
+			InsertHeroNode2(head,hero)
+		case "delete":
+			fmt.Println("请输入英雄编号")
+			fmt.Scanln(&no)
+			// 删除
+			DelHeroNode(head, no)
+		case "update":
+			fmt.Println("请输入英雄编号")
+			fmt.Scanln(&no)
+			fmt.Println("请输入英雄名字")
+			fmt.Scanln(&name)
+			fmt.Println("请输入英雄昵称")
+			fmt.Scanln(&nickName)
+			// 修改
+			hero := &HeroNode{
+				no : no,
+				name : name,
+				nickName : nickName,
+			}
+			UpdateHeroNode(head, hero)
+
+		case "list":
+			// 显示
+			ListHeroNode(head)
+		}
+	}
+
+	// ListHeroNode(head)
 }
