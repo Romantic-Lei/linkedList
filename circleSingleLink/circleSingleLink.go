@@ -35,6 +35,63 @@ func InsertCatNode(head *CatNode, newCatNode *CatNode) {
 
 }
 
+// 删除一只猫
+func DelCatNode(head *CatNode, id int) *CatNode {
+	temp := head // 指向环形链表的最前面
+	helper := head // 指向环形链表的最后
+	// 空链表
+	if temp.next == nil {
+		fmt.Println("这是一个人空的环形单链表， 不能删除")
+		return head
+	}
+
+	// 如果只有一个结点
+	if temp.next == head { // 只有一个结点
+		temp.next = nil
+		return head
+	}
+
+	// 将 helper 定位到链表的最后
+	for {
+		if helper.next == head {
+			break
+		}
+		helper = helper.next
+	}
+
+	// 如果有两个或者两个以上结点
+	flag := true // 默认我们没有删除
+	for {
+		if temp.next == head {
+			// 说明已经到最后一个了，但是还未比较,我们会在下面的 flag 中进行比较删除
+			break
+		}
+		if temp.no == id {
+			if temp == head {
+				// 说明删除的是头结点
+				head = head.next
+			}
+			// 找到，进行删除
+			helper.next = temp.next
+			fmt.Printf("猫猫 = %d 被删除\n", id)
+			flag = false
+			break
+		}
+		temp = temp.next // 移动 【比较】
+		helper = helper.next // 移动 【找到结点后，通过他来删除】
+	}
+	if flag {
+		// 如果 flag 为真，则我们在上面没有进行删除
+		if temp.no == id {
+			helper.next = temp.next
+			fmt.Printf("猫猫 id = %d 被删除\n", id)
+		} else {
+			fmt.Printf("请确定你输入的猫猫id(%d) 是否正确\n", id)
+		}
+	}
+	return head
+}
+
 // 输出环形链表
 func ListCircleLink(head *CatNode) {
 	fmt.Println("环形单链表显示如下：")
@@ -72,5 +129,8 @@ func main() {
 	InsertCatNode(head, cat1)
 	InsertCatNode(head, cat2)
 	InsertCatNode(head, cat3)
+	ListCircleLink(head)
+	head = DelCatNode(head, 5)
+
 	ListCircleLink(head)
 }
