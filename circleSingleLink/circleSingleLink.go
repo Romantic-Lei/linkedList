@@ -26,13 +26,23 @@ func InsertCatNode(head *CatNode, newCatNode *CatNode) {
 	for {
 		if temp.next == head {
 			break
+		} else if temp.next.no > newCatNode.no {
+			break
+		} else if temp.next.no == newCatNode.no {
+			fmt.Printf("猫猫 id = %d 已存在， 插入失败", newCatNode.no)
+			return 
 		}
 		temp = temp.next
 	}
 	// 加入到链表中
-	temp.next = newCatNode
-	newCatNode.next = head
-
+	// if (temp.next == head) {
+	// 	temp.next = newCatNode
+	// 	newCatNode.next = head
+	// } else {
+		// 如果添加的在最后，那么 temp.next 已经是指向的 head 了
+		newCatNode.next = temp.next
+		temp.next = newCatNode
+	// }
 }
 
 // 删除一只猫
@@ -127,8 +137,8 @@ func main() {
 		name : "Mary",
 	}
 	InsertCatNode(head, cat1)
-	InsertCatNode(head, cat2)
 	InsertCatNode(head, cat3)
+	InsertCatNode(head, cat2)
 	ListCircleLink(head)
 	head = DelCatNode(head, 5)
 
