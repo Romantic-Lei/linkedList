@@ -58,8 +58,55 @@ func ShowBoy(first *Boy) {
 	}
 }
 
+// first *Boy 头结点, startNo int 开始出列小孩编号, countNum int 每次移动个数
+// 使用算法，按照要求，在环形链表中留下最后一个人
+func PlayGame(first *Boy, startNo int, countNum int) {
+	// 1. 空的链表我们单独的处理
+	if first.next == nil {
+		fmt.Println("链表为空，没有小孩")
+		return 
+	}
+	// 可以在这个地方留一个判断， 判断 startNo <= 小孩的总数
+	// 2. 需要定义一个辅助指针， 帮助我们删除小孩
+	tail := first
+	// 3. 让 tail 指向环形链表的最后一个小孩
+	// 因为在删除小孩是，tail 需要用到
+	for {
+		if tail.next == first {
+			// 说明 tail 已经都了最后一个小孩
+			break
+		}
+		tail = tail.next
+	}
+	// 4. 让 first 移动到 startNo
+	for i := 0; i < startNo - 1; i++ {
+		first = first.next
+		tail = tail.next
+	}
+	fmt.Println()
+	fmt.Println("first = ", first, "tail = ", tail)
+	// 5. 开始数 countNum， 然后就删除 first 指向的小孩
+	for {
+		// 开始数 countNum - 1 次
+		for i := 0; i < countNum - 1; i++ {
+			first = first.next
+			tail = tail.next
+		}
+		fmt.Printf("编号为 %d 的小孩被移除 \n", first.No)
+		// 删除 first 指向的小孩
+		first = first.next
+		tail.next = first
+		// 如果 tail == first ，圈里面就只有一个小孩了
+		if tail == first {
+			break
+		}
+	}
+	fmt.Printf("最后出圈的小孩编号为 %d 出圈 -> \n", first.No)
+}
+
 func main() {
 	first := AddBoy(5)
 	// 显示小孩
 	ShowBoy(first)
+	PlayGame(first, 2, 3)
 }
