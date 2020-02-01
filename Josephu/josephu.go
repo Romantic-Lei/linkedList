@@ -39,16 +39,19 @@ func AddBoy(num int) *Boy {
 }
 
 // 显示单向环形链表[遍历]
-func ShowBoy(first *Boy) {
+func ShowBoy(first *Boy) int {
+	// 统计一共有多少个小孩
+	i := 0
 	// 处理一下如果环形链表为空
 	if first.next == nil {
 		fmt.Println("链表为空，没有小孩")
-		return 
+		return i
 	}
 	// 创建一个指针， 帮助遍历
 	curBoy := first
 	for {
 		fmt.Printf("小孩编号 = %d ->", curBoy.No)
+		i++
 		// 退出的条件 当下一条的next指向了头部的时候，遍历完毕
 		if curBoy.next == first {
 			break
@@ -56,17 +59,22 @@ func ShowBoy(first *Boy) {
 		// curBoy 移动到下一条
 		curBoy = curBoy.next
 	}
+	return i
 }
 
-// first *Boy 头结点, startNo int 开始出列小孩编号, countNum int 每次移动个数
+// first *Boy 头结点, startNo int 开始出列小孩编号, countNum int 每次移动个数 boyNum int 小孩总数
 // 使用算法，按照要求，在环形链表中留下最后一个人
-func PlayGame(first *Boy, startNo int, countNum int) {
+func PlayGame(first *Boy, startNo int, countNum int, boyNum int) {
 	// 1. 空的链表我们单独的处理
 	if first.next == nil {
 		fmt.Println("链表为空，没有小孩")
 		return 
 	}
 	// 可以在这个地方留一个判断， 判断 startNo <= 小孩的总数
+	if startNo > boyNum {
+		fmt.Println("效率过低，开始小孩编号小于小孩总数")
+		return 
+	}
 	// 2. 需要定义一个辅助指针， 帮助我们删除小孩
 	tail := first
 	// 3. 让 tail 指向环形链表的最后一个小孩
@@ -107,6 +115,6 @@ func PlayGame(first *Boy, startNo int, countNum int) {
 func main() {
 	first := AddBoy(5)
 	// 显示小孩
-	ShowBoy(first)
-	PlayGame(first, 2, 3)
+	i := ShowBoy(first)
+	PlayGame(first, 2, 3, i)
 }
