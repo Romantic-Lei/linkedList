@@ -49,13 +49,17 @@ func ShowBoy(first *Boy) {
 	curBoy := first
 	for {
 		fmt.Printf("小孩编号 = %d ->", curBoy.No)
-		// 退出的条件
-		if curBoy.next == nil {
-			
+		// 退出的条件 当下一条的next指向了头部的时候，遍历完毕
+		if curBoy.next == first {
+			break
 		}
+		// curBoy 移动到下一条
+		curBoy = curBoy.next
 	}
 }
 
 func main() {
-
+	first := AddBoy(5)
+	// 显示小孩
+	ShowBoy(first)
 }
